@@ -4,8 +4,13 @@ const title = process.argv[3];
 const command = process.argv[2];
 switch (command) {
     case 'add': {
-        const task = createTask(1, title);
-        console.log(task);
+        try{
+            const task = createTask(1, title);
+            console.log(task);
+        } catch (error) {
+            console.error(error.message);
+            process.exit(1);
+        }
         break;
     }
     case 'list': {
