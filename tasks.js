@@ -6,5 +6,6 @@ export function createTask(id, title) {
 }
 
 export function formatTask(task) {
-    return task.done ? `[x] ${task.id}. ${task.title}`:`[ ] ${task.id}. ${task.title}`;
+    const box = task.done ? "[x]":"[ ]"
+    return `${box} ${task.id}. ${task.title}`;
 }
