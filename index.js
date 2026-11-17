@@ -1,13 +1,13 @@
-import { createTask } from "./tasks.js";
+import { createTask, formatTask } from "./tasks.js";
 import {loadTasks, saveTasks} from "./storage.js";
 
-const title = process.argv[3];
+const arg = process.argv[3];
 const command = process.argv[2];
 switch (command) {
     case 'add': {
         try{
             const tasks = await loadTasks();
-            const task = createTask(tasks.length+1, title);
+            const task = createTask(tasks.length+1, arg);
 
             tasks.push(task);
             await saveTasks(tasks);
@@ -22,7 +22,9 @@ switch (command) {
     case 'list': {
         try{
             const tasks = await loadTasks();
-            console.log(tasks);
+            for (const task of tasks) {
+                console.log(formatTask(task));
+            }
         } catch (error) {
             console.error(error.message);
             process.exit(1);

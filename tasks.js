@@ -4,3 +4,7 @@ export function createTask(id, title) {
     }
     return {id, title, done:false, createdAt: new Date().toISOString()};
 }
+
+export function formatTask(task) {
+    return task.done ? `[x] ${task.id}. ${task.title}`:`[ ] ${task.id}. ${task.title}`;
+}
