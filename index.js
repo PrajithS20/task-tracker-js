@@ -48,6 +48,37 @@ switch (command) {
         }
         break;
     }
+    case 'done': {
+        try{
+            if (!arg) {
+                console.log('Please provide a task id. Example: node index.js done 1');
+                process.exit(1);
+            }
+            const id = Number(arg);
+            if (!id) {
+                console.log('Invalid id number');
+                process.exit(1);
+            }
+            const tasks = await loadTasks();
+            let task = tasks.find(task => task.id === id);
+            if (!task) {
+                console.log('No task with id ' + id);
+                process.exit(1);
+            }
+            else if (task.done) {
+                console.log(`Task ${id} is already done`);
+                process.exit(1);
+            }
+            task.done = true;
+            await saveTasks(tasks);
+
+            console.log(`Updated task ${id} to done`);
+        } catch (error) {
+            console.error(error.message);
+            process.exit(1);
+        }
+        break;
+    }
     default: {
         console.log(`Unknown command`);
         console.log('available command: add, list');
