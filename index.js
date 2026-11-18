@@ -55,12 +55,12 @@ switch (command) {
                 process.exit(1);
             }
             const id = Number(arg);
-            if (!id) {
+            if (Number.isNaN(id)) {
                 console.log('Invalid id number');
                 process.exit(1);
             }
             const tasks = await loadTasks();
-            let task = tasks.find(task => task.id === id);
+            const task = tasks.find(task => task.id === id);
             if (!task) {
                 console.log('No task with id ' + id);
                 process.exit(1);
@@ -81,7 +81,7 @@ switch (command) {
     }
     default: {
         console.log(`Unknown command`);
-        console.log('available command: add, list');
+        console.log('available command: add, list, done');
         process.exit(1);
     }
 }
