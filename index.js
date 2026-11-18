@@ -99,7 +99,24 @@ switch (command) {
             }
             const remaining = tasks.filter(task => task.id !== id);
             await saveTasks(remaining);
-            console.log(`Deleted task ${task.id}. ${task.title}`);
+            console.log(`Deleted task ${task.id}: ${task.title}`);
+        } catch (error) {
+            console.error(error.message);
+            process.exit(1);
+        }
+        break;
+    }
+    case 'stats': {
+        try{
+            const tasks = await loadTasks();
+            if (tasks.length === 0) {
+                console.log('No tasks yet. Add one with: node index.js add "Buy milk"')
+                break;
+            }
+            const total = tasks.length;
+            const done = tasks.reduce((count, task) => count + (task.done ? 1 : 0), 0);
+            const pending = total - done;
+            console.log(`Total: ${total}\nDone: ${done}\nPending: ${pending}`);
         } catch (error) {
             console.error(error.message);
             process.exit(1);
@@ -108,7 +125,7 @@ switch (command) {
     }
     default: {
         console.log(`Unknown command`);
-        console.log('available command: add, list, done, delete');
+        console.log('available command: add, list, done, delete, stats');
         process.exit(1);
     }
 }
