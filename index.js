@@ -1,4 +1,4 @@
-import { createTask, formatTask } from "./tasks.js";
+import { createTask, formatTask, getNextId } from "./tasks.js";
 import {loadTasks, saveTasks} from "./storage.js";
 
 const arg = process.argv[3];
@@ -7,7 +7,8 @@ switch (command) {
     case 'add': {
         try{
             const tasks = await loadTasks();
-            const task = createTask(tasks.length+1, arg);
+            const nextId = getNextId(tasks);
+            const task = createTask(nextId, arg);
 
             tasks.push(task);
             await saveTasks(tasks);
@@ -97,8 +98,8 @@ switch (command) {
                 process.exit(1);
             }
             const remaining = tasks.filter(task => task.id !== id);
-            console.log(`Updated task ${id} to done`);
             await saveTasks(remaining);
+            console.log(`Deleted task ${task.id}. ${task.title}`);
         } catch (error) {
             console.error(error.message);
             process.exit(1);

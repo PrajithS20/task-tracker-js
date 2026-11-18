@@ -9,3 +9,7 @@ export function formatTask(task) {
     const box = task.done ? "[x]":"[ ]"
     return `${box} ${task.id}. ${task.title}`;
 }
+export function getNextId(tasks) {
+    const largestId = tasks.reduce((max,task) => Math.max(max, task.id), 0);
+    return largestId+1;
+}
