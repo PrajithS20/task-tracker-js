@@ -79,9 +79,35 @@ switch (command) {
         }
         break;
     }
+    case 'delete': {
+        try{
+            if (!arg) {
+                console.log('Please provide a task id. Example: node index.js delete 1');
+                process.exit(1);
+            }
+            const id = Number(arg);
+            if (Number.isNaN(id)) {
+                console.log('Invalid id number');
+                process.exit(1);
+            }
+            const tasks = await loadTasks();
+            const task = tasks.find(task => task.id === id);
+            if (!task) {
+                console.log('No task with id ' + id);
+                process.exit(1);
+            }
+            const remaining = tasks.filter(task => task.id !== id);
+            console.log(`Updated task ${id} to done`);
+            await saveTasks(remaining);
+        } catch (error) {
+            console.error(error.message);
+            process.exit(1);
+        }
+        break;
+    }
     default: {
         console.log(`Unknown command`);
-        console.log('available command: add, list, done');
+        console.log('available command: add, list, done, delete');
         process.exit(1);
     }
 }
